@@ -1,0 +1,1878 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta charset="utf-8">
+<link rel="icon" type="image/png" href="images/favicon.png" />
+<title>Home | Experion</title>
+<!--<link rel="stylesheet" type="text/css" href="styles/animate.css">
+<link rel="stylesheet" type="text/css" href="styles/slick.css">
+<link rel="stylesheet" type="text/css" href="styles/slick-theme.css">
+<link rel="stylesheet" type="text/css" href="styles/style.css">-->
+<link rel="stylesheet" type="text/css" href="styles/common.css">
+<script src="scripts/common-js.js" type="text/javascript"></script>
+<!--<script src="scripts/jquery-min.js" type="text/javascript"></script>-->
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=places&region=uk&language=en&sensor=true"></script>
+<!--<script src="scripts/jquery.bxslider.min.js"></script>-->
+
+<!--<script type="text/javascript">
+var markers = [{"title":"MIDDLE EAST AND AFRICA","lat":"25.2015176","lng":"55.2742939","icon":"images/map-pin-img-blue.png","img":"images/Boulevard.jpg","description":"<div style='height: 53px;'>Level 14, Boulevard Plaza Tower One,<br>Emaar Boulevard, <br>Downtown Dubai, P O Box 334155,<br>Dubai, United Arab Emirates<br>Contact Person : Bijoy Chandrabalan<br>+ 971 4 455 8733<br>+ 971 4 455 8556<br></div>"},{"title":"USA","lat":"39.0696003","lng":"-77.1674547","icon":"images/map-pin-img-red.png","img":"images/usa-img.jpg","description":"<div style='height: 33px;'>1000 Willowleaf Way,<br> Potomac  MD 20854,<br>Contact Person: Harish Chidambaran<br>+1 650 248 9874</div>"},{"title":"ASIA PACIFIC","lat":"1.2788967","lng":"103.8458187","icon":"images/map-pin-img-green.png","img":"images/asia-pacific.jpg","description":"<div style='height: 33px;'>143 Cecil Street#03-01 GB Building<br>Singapore 069542<br>Contact Person: Capt. Vikas Nayar<br>+65 62210112<br>+65 82882224</div>"},{"title":"EUROPE","lat":"53.59836","lng":"10.1342613","icon":"images/map-pin-img-yellow.png","img":"images/europe.jpg","description":"<div style='height: 33px;'>Kopernikus str 46 b<br> 22147 Hamburg<br>Contact Person: Capt. Michael Neuhaus<br>+49 176 8196 5644<br>+49 40 3286 1707</div>"},{"title":"INDIA","lat":"10.0090543","lng":"76.3404596","icon":"images/map-pin-img-orange.png","img":"images/cochin.jpg","description":"<div style='height: 53px;'>A8, Second Floor,<br> Stephanos Tower,<br> Cochin SEZ,<br>Seaport Airport Road,<br> Kakkanad, Ernakulam,<br>Kerala, INDIA<br>Contact Person: Santosh Kumar<br>+91 484 3192362<br>+91 9820067479</div>"}];
+
+
+
+window.onload = function () {
+
+var styles =
+
+[{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},
+
+{"color":"#000000"},{"lightness":40}]},
+
+{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},
+
+{"color":"#000000"},{"lightness":16}]},
+
+{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},
+
+{"featureType":"administrative","elementType":"geometry.fill","stylers":
+
+[{"color":"#000000"},{"lightness":20}]},
+
+{"featureType":"administrative","elementType":"geometry.stroke","stylers":
+
+[{"color":"#000000"},{"lightness":17},{"weight":1.2}]},
+
+{"featureType":"administrative.country","elementType":"geometry","stylers":
+
+[{"visibility":"off"}]},{"featureType":"landscape","elementType":"geometry","stylers":
+
+[{"color":"#000000"},{"lightness":20}]},
+
+{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},
+
+{"lightness":21}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":
+
+[{"color":"#000000"},{"lightness":17}]},
+
+{"featureType":"road.highway","elementType":"geometry.stroke","stylers":
+
+[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},
+
+{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},
+
+{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":
+
+[{"color":"#000000"},{"lightness":16}]},
+
+{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#313030"},
+
+{"lightness":19}]},{"featureType":"transit","elementType":"labels.text","stylers":
+
+[{"saturation":"-33"}]},{"featureType":"water","elementType":"geometry","stylers":
+
+[{"color":"#2b3032"},{"lightness":17}]}];
+
+var mapOptions = {
+zoom: 100,
+center: new google.maps.LatLng(markers[0].lat, markers[0].lng),
+mapTypeId: google.maps.MapTypeId.ROADMAP,
+styles: styles
+};
+
+var bounds = new google.maps.LatLngBounds(
+new google.maps.LatLng(1.2788967,-7.16745470000001),
+new google.maps.LatLng(53.59836, 243.8458187)
+);
+
+//var center = bounds.getCenter();  // still returns (55.04334815163844, -1.9917653831249726)
+
+//alert(x)
+var map = new google.maps.Map(document.getElementById("contact-map"), mapOptions);
+var infoWindow = new google.maps.InfoWindow();
+var lat_lng = new Array();
+var latlngbounds = new google.maps.LatLngBounds();
+for (i = 0; i < markers.length; i++) {
+var data = markers[i]
+var myLatlng = new google.maps.LatLng(data.lat, data.lng);
+lat_lng.push(myLatlng);
+var marker = new google.maps.Marker({
+position: myLatlng,
+map: map,
+icon: data.icon,
+title: data.title
+});
+latlngbounds.extend(marker.position);
+(function (marker, data) {
+google.maps.event.addListener(marker, "click", function (e) {
+$(".address-banner").css("background-image","url("+data.img+")")
+$(".address-desc p").html(data.description)
+infoWindow.setContent(data.description);
+infoWindow.open(map, marker);
+});
+})(marker, data);
+}
+map.setCenter(latlngbounds.getCenter());
+//alert(latlngbounds)
+
+//map.fitBounds("((1.2788967,-77.1674547001),(53.59836,103.8458187))");
+map.fitBounds(bounds);
+}
+</script>-->
+<script>
+$(document).ready(function(){
+setTimeout(function() {
+if(!/index.html/.test(window.location.href))
+{
+
+}
+else
+if(/index.html#/.test(window.location.href)){
+var path = window.location
+window.location.replace(path);
+}
+
+}, 1500);
+})
+</script>
+</head>
+<body>
+<div class="loader"></div>
+<div class="wrapper">
+<header class="header">
+  <div class="container">
+    <div class="navigation">
+      <div class="logo"><a href="index.html"><img src="images/logo.png"></a></div>
+      <div class="main-linkscntr">
+        <div class="main-linkd">
+          <ul>
+            <li><a href="index.html" class="active">HOME</a></li>
+            <li><a href="#">Company</a>
+              <div class="plus-minus"> <img src="images/plus-img.png" class="plus-img" showimg="show-img"> <img src="images/minus-img.png" class="minus-img" style="display:none;"> </div>
+              <div class="sub-dropdown">
+                <ul>
+                  <div class="arrow-down"></div>
+                  <li><a href="about-us.html">About Us</a></li>
+                  <li><a href="index.html#meet-the-team">Meet The Team</a></li>
+                  <li><a href="index.html#news-events">News & Events</a></li>
+                </ul>
+              </div>
+            </li>
+            <li><a href="#">solution</a>
+              <div class="plus-minus"> <img src="images/plus-img.png" class="plus-img" showimg="show-img"> <img src="images/minus-img.png" class="minus-img" style="display:none;"> </div>
+              <div class="sub-dropdown">
+                <ul>
+                  <div class="arrow-down"></div>
+                  <li><a href="index.html#ete-oil-and-gas">Oil & Gas</a></li>
+                  <li><a href="index.html#ete-marine-oil-and-gas">Marine</a></li>
+                  <li><a href="index.html#ete-mobility-and-healthcare"> Healthcare</a></li>
+                  <li><a href="index.html#ete-insurance-network">Insurance</a></li>
+                  <li><a href="index.html#ete-retail-and-distribution">Retail & Distribution</a></li>
+                </ul>
+              </div>
+            </li>
+            <li><a href="#">technology</a>
+              <div class="plus-minus"> <img src="images/plus-img.png" class="plus-img" showimg="show-img"> <img src="images/minus-img.png"  class="minus-img" style="display:none;"> </div>
+              <div class="sub-dropdown">
+                <ul>
+                  <div class="arrow-down"></div>
+                  <li><a href="workflow-automation.html">Workflow Automation Solution</a></li>
+                  <li><a href="application-development.html">Application Development</a></li>
+                  <li><a href="consulting.html">Consulting</a></li>
+                  <li><a href="x-idc.html">X-IDC</a></li>
+                </ul>
+              </div>
+            </li>
+            <li><a href="index.html#case-studies">Case Studies</a></li>
+            <li><a href="contact-us.html" >contact</a></li>
+          </ul>
+          <div class="clear"></div>
+        </div>
+        <div class="mobile-nav-icon">
+          <button class="menu-icon mobil-icon-toggle"> <span>toggle menu</span> </button>
+        </div>
+        <!--<div class="search-box">
+<div id="wrap-search">
+<form action="" autocomplete="on">
+<input id="search" name="search" type="text" placeholder="What're we looking for ?">
+<input id="search_submit" value="Rechercher" type="submit">
+</form>
+</div>
+</div>-->
+        <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+</header>
+<section class="full-slider">
+  <div class="custom-pre-control"><a href="javascript:void(0);" id="slider-prev"> </a> </div>
+  <ul class="bxslider">
+    <li data-image-src="images/experion-banner.jpg">
+      <div class="slide-info">
+        <div class="slide-info-inner">
+          <div class="container">
+            <div class="slider-text experion-banner">
+              <h2><!--Mobility Meets --><br>
+                <span><!--Healthcare--></span></h2>
+
+              <!--<div class="read-morebtn"> <a href="index.html#ete-mobility-and-healthcare">KNOW MORE</a> </div>-->
+              <img src="images/experion-banner-logo.png">
+              <p style="text-align:center;color:#ffffff;">Creating Compelling Business Value for our Customers, that is both Sustainable and Scalable</p>
+            </div>
+            <div class="solution-bannerlinks">
+              <div class="txt-sol-hdng"><!--solutions--></div>
+              <div class="sol-dotslinks">
+                <!--<ul>
+<li> <a href="patient-engagement.html"><i></i><span>Patient Engagement</span></a> </li>
+<li> <a href="health-care-app.html"><i></i><span>Healthcare App</span></a> </li>
+</ul>-->
+                <div class="clear"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li data-image-src="images/banner-1.jpg">
+      <div class="slide-info">
+        <div class="slide-info-inner">
+          <div class="container">
+            <div class="slider-text">
+              <h2> <span>Oil & Gas </span></h2>
+              <!--<p> Quality Managers and Risk Analysts</p>-->
+              <div class="read-morebtn"> <a href="index.html#ete-oil-and-gas">KNOW MORE</a> </div>
+            </div>
+            <div class="solution-bannerlinks oil-gas-slider">
+              <div class="txt-sol-hdng">solutions</div>
+              <div class="sol-dotslinks">
+                <ul>
+                  <li> <a href="vessel-vetting-oil-gas.html"><i></i><span>Vessel Vetting</span></a> </li>
+                  <li> <a href="vessel-inspection-oil-gas.html"><i></i><span>Vessel Inspection</span></a> </li>
+                  <li> <a href="training-compliance-oil-gas.html"><i></i><span>Training & Compliance</span></a> </li>
+                </ul>
+                <div class="clear"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li data-image-src="images/marine-banner.jpg">
+      <div class="slide-info">
+        <div class="slide-info-inner">
+          <div class="container">
+            <div class="slider-text">
+              <h2>Marine<br>
+                <span></span></h2>
+              <div class="read-morebtn"> <a href="index.html#ete-marine-oil-and-gas">KNOW MORE</a> </div>
+            </div>
+            <div class="solution-bannerlinks marin-oil-gas-slider">
+              <div class="txt-sol-hdng">solutions</div>
+              <div class="sol-dotslinks">
+                <ul>
+                  <li> <a href="vessel-vetting.html"><i></i><span>Vessel Vetting</span></a> </li>
+                  <li> <a href="vessel-inspection.html"><i></i><span>Vessel Inspection</span></a> </li>
+                  <li> <a href="marine-insurance.html"> <i></i> <span>Marine Insurance</span></a> </li>
+                  <li> <a href="training-compliance.html"><i></i><span>Training & Compliance</span></a> </li>
+                </ul>
+                <div class="clear"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li data-image-src="images/banner-2.jpg">
+      <div class="slide-info">
+        <div class="slide-info-inner">
+          <div class="container">
+            <div class="slider-text">
+              <h2>Mobility Meets <br>
+                <span>Healthcare</span></h2>
+              <!--<p> Quality Managers and Risk Analysts</p>-->
+              <div class="read-morebtn"> <a href="index.html#ete-mobility-and-healthcare">KNOW MORE</a> </div>
+            </div>
+            <div class="solution-bannerlinks">
+              <div class="txt-sol-hdng">solutions</div>
+              <div class="sol-dotslinks">
+                <ul>
+                  <li> <a href="patient-engagement.html"><i></i><span>Patient Engagement</span></a> </li>
+                  <li> <a href="health-care-app.html"><i></i><span>Healthcare App</span></a> </li>
+                </ul>
+                <div class="clear"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li data-image-src="images/banner-3.jpg">
+      <div class="slide-info">
+        <div class="slide-info-inner">
+          <div class="container">
+            <div class="slider-text">
+              <h2>Insurance<br>
+                <span>Network Made Easy</span></h2>
+              <!-- <p> Quality Managers and Risk Analysts</p>-->
+              <div class="read-morebtn"> <a href="index.html#ete-insurance-network">KNOW MORE</a> </div>
+            </div>
+            <div class="solution-bannerlinks">
+              <div class="txt-sol-hdng">solutions</div>
+              <div class="sol-dotslinks">
+                <ul>
+                  <li> <a href="member-engagement.html"><i></i><span>Member Engagement Platform</span></a> </li>
+                  <li> <a href="hospital-integration-platform.html"><i></i><span>Hospital Integration Platform</span></a> </li>
+                  <li> <a href="insurance-mobile-app.html"><i></i><span>Insurance Mobile App</span></a> </li>
+                </ul>
+                <div class="clear"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li data-image-src="images/banner-4.jpg">
+      <div class="slide-info">
+        <div class="slide-info-inner">
+          <div class="container">
+            <div class="slider-text">
+              <h2>Retail & <br>
+                <span>Distribution</span></h2>
+              <!--<p> Quality Managers and Risk Analysts</p>-->
+              <div class="read-morebtn"> <a href="index.html#ete-retail-and-distribution">KNOW MORE</a> </div>
+            </div>
+            <div class="solution-bannerlinks">
+              <div class="txt-sol-hdng">solutions</div>
+              <div class="sol-dotslinks">
+                <ul>
+                  <li> <a href="infinite-edi-suite.html"> <i></i> <span>Infinite EDI Suite</span></a> </li>
+                  <li> <a href="infinite-sfa-crm-suite.html"><i></i><span>Infinite SFA/CRM Suite</span></a> </li>
+                  <li> <a href="infinite-marketplace-suite.html"><i></i><span>Infinite Marketplace Suite</span></a> </li>
+                </ul>
+                <div class="clear"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+  <div class="custom-next-control"><a href="javascript:void(0);" id="slider-next"> </a> </div>
+  <!--<div class="scrolldown-txt"> <span>scroll down</span> </div>-->
+</section>
+<div class="content-area">
+<div class="trustedby-box common-spacing">
+  <div class="container">
+    <div class="wow animated fadeInDown heading-box" data-wow-delay="0.1s" data-wow-offset="50">
+      <h2>
+        <div><img src="images/trusted-by-logo.png"></div>
+        Trusted <span>By</span></h2>
+    </div>
+    <div class="wow animated fadeIn trusted-by-slider" data-wow-delay="0.5s" data-wow-offset="150">
+      <div class="trusted-sliderbx">
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-17">
+              <div class="slide-number">00</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-5">
+              <div class="slide-number">05</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-4">
+              <div class="slide-number">04</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-7">
+              <div class="slide-number">07</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-1">
+              <div class="slide-number">01</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-2">
+              <div class="slide-number">02</div>
+            </div>
+          </div>
+        </div>
+        <!--<div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-3">
+              <div class="slide-number">03</div>
+            </div>
+          </div>
+        </div>-->
+
+
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-6">
+              <div class="slide-number">06</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-8">
+              <div class="slide-number">08</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-9">
+              <div class="slide-number">09</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-10">
+              <div class="slide-number">10</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-11">
+              <div class="slide-number">11</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-12">
+              <div class="slide-number">12</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-13">
+              <div class="slide-number">13</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-14">
+              <div class="slide-number">14</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-15">
+              <div class="slide-number">15</div>
+            </div>
+          </div>
+        </div>
+        <div class="trust-slide">
+          <div class="trust-logo">
+            <div class="trust-img trust-logo-16">
+              <div class="slide-number">16</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="wow animated fadeInUp trustby-txt" data-wow-delay="0.1s" data-wow-offset="50">
+      <!--<p>Building Long-Term and Strategic Partnerships with constant focus on improving Customer Process Effeciencies</p>-->
+      <p>Building Long-Term Strategic Partnerships with constant focus on improving Customer Process Efficiencies</p>
+    </div>
+  </div>
+</div>
+<a id="ete-oil-and-gas"></a>
+<div class="endtoend-solution oil-gas-blue-bg common-spacing">
+  <div class="container">
+    <div class="wow animated fadeInDown heading-box" data-wow-delay="0.1s" data-wow-offset="50">
+      <h2> End to End solution for <span>Oil & Gas</span> </h2>
+    </div>
+    <div class="ete-desc">
+      <div class="ete-slider">
+        <div class="ete-txtslider">
+          <div class="ete-slide marine-oil-gas-desc">
+            <p>Business and operational complexities in the Energy industry seem to be increasing and accelerating and there is an increasing value being placed on safety, regulatory compliance and a growing need for new business models.</p>
+            <p>Our key competence and focus area within Oil & Gas is on enabling the Marine component related to upstream Oil & Gas services, with marine practice specialists delivering business value across the entire life cycle of any initiative, which includes assessment and advisory capabilities, solution design and architecting, integration and deployment, and finally operations and support to sustain long term results.</p>
+            <!--<div class="wow animated fadeInDown ete-italic" data-wow-delay="0.2s" data-wow-offset="50">The Vision for the Partnership is to evolve as a global leader and services provider for Risk Assessment & Mitigation and HSEQ Compliance in the Marine & Oil and Gas industry, respected for delivering powerful and best-value pragmatic solutions with flawless performance.</div>-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="partnership-with">
+      <!-- <h3>In Partnership with</h3>-->
+      <img src="images/health-care-logo.png"> </div>
+    <div class="circle-boxes">
+      <ul>
+        <!--<li class="wow animated fadeInUp heading-box" data-wow-delay="0.3s">
+<div class="box-table">
+<div class="box-tablecell"> <a href="marine-insurance.html"> <i class="icon-1"></i> <span>Marine<br>
+Insurance</span> </a> </div>
+<div class="shadow-div"></div>
+</div>
+</li>-->
+        <li class="wow animated fadeInUp heading-box oil-gas-section" data-wow-delay="0.6s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="training-compliance-oil-gas.html"> <i class="icon-2"></i> <span>Training & <br>
+              Compliance </span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+        <li class="wow animated fadeInUp heading-box oil-gas-section" data-wow-delay="0.9s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="vessel-vetting-oil-gas.html"> <i class="icon-3"></i> <span>Vessel<br>
+              Vetting</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+        <li class="wow animated fadeInUp heading-box oil-gas-section" data-wow-delay="1.2s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="vessel-inspection-oil-gas.html"> <i class="icon-4"></i> <span>Vessel<br>
+              Inspection</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<a id="ete-marine-oil-and-gas"></a>
+<div class="endtoend-solution common-spacing">
+  <div class="container">
+    <div class="wow animated fadeInDown heading-box" data-wow-delay="0.1s" data-wow-offset="50">
+      <h2> End to End solution for <span>Marine</span> </h2>
+    </div>
+    <div class="ete-desc">
+      <div class="ete-slider">
+        <div class="ete-txtslider">
+          <div class="ete-slide marine-oil-gas-desc">
+            <p>Experion Technologies and Aethon Marine have a strategic partnership that brings together a team of Senior Mariners, and IT domain expertise to provide Marine Consulting services on a global platform. Our services coverage spans across 16 countries today.</p>
+            <p>Assisted by team of dedicated and experienced consultants, all of whom are Master Mariners or First Class Engineers, holding accreditations issued under the SIRE and CDI programs Experion is developing transformative software products and services for the Marine and Oil & Gas domains.</p>
+            <p> The Aethon Marine Team global expertise on Vetting, QSHE and TMSA  including practical experience of SIRE inspections and TMSA audits from an Oil major perspective are critical components that drive our new product development in this domain.</p>
+            <div class="wow animated fadeInDown ete-italic" data-wow-delay="0.2s" data-wow-offset="50">The Vision for the Partnership is to evolve as a global leader and services provider for Risk Assessment & Mitigation and HSEQ Compliance in the Marine & Oil and Gas industry, respected for delivering powerful and best-value pragmatic solutions with flawless performance.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="partnership-with">
+      <h3>In Partnership with</h3>
+      <img src="images/aethon-marine-logo.png"> </div>
+    <div class="circle-boxes">
+      <ul>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.3s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="marine-insurance.html"> <i class="icon-1"></i> <span>Marine<br>
+              Insurance</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.6s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="training-compliance.html"> <i class="icon-2"></i> <span>Training & <br>
+              Compliance </span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.9s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="vessel-vetting.html"> <i class="icon-3"></i> <span>Vessel<br>
+              Vetting</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="1.2s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="vessel-inspection.html"> <i class="icon-4"></i> <span>Vessel<br>
+              Inspection</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<a id="news-events"></a>
+<div class="news-events-box common-spacing home">
+  <div class="container">
+    <h2 class="news-events-heading">News & Events</h2>
+    <div class="wow animated fadeInUp news-events-cntr" data-wow-delay="0.3s"  data-wow-offset="150">
+      <div class="news-events-slider">
+        <div class="news-events-slide">
+          <div class="news-events-row">
+            <div class="news-events-img"><span class="date">25</span><br>
+              Dec 2016</div>
+            <div class="news-events-txt">
+              <h2>Experion &amp; Infinite Solutions successfully rolls out B2B Marketplace portal for the largest retailer in Middle East.</h2>
+              <div class="news-events-desc">
+                <p><span>01</span>Experion Technologies Middle East & Africa along with its European partner Infinite Solutions has successfully rolled out a B2B Marketplace portal for the single largest retailer in the Middle East region. This B2B Marketplace portal is used by more than 700 suppliers of this retailer.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true">
+                  <p>The B2B Marketplace portal allows the retailer now to digitally send across Purchase Orders to all of its suppliers without reliance on unreliable communication channels like Emails or Faxes. The B2B Marketplace portal is connected to the retailers ERP system so that at each store level whenever orders are placed, they are immediately made available on the B2B Marketplace portal for the supplier to download and process.</p>
+                  <p>B2B platform which seamlessly connects a producer/distributor with end clients hereby supporting purchasing and delivery processes. The system powers integration, synchronization and collaboration of business partners within the whole supply chain.</p>
+                  <p>Infinite Marketplace Suite facilitates the full scope of B2B transactions - from the purchasing activities up to the final payment - day in and day out. The platform relies on the Electronic Data Interchange technology and requires only Internet connection to fulfill orders and carry out transactions.</p>
+                  <p>Experion had a very important local role to onboard more than 700 suppliers to the portal, provide training and support to the suppliers in order to avoid any issues in accessing the portal.</p>
+                  <p>The importance of this project was that the concept of digital transformation was kickstarted for the retailer. It allowed retailers to create a digital channel to suppliers and help suppliers to get access to Purchase Orders on a web platform which is accessible anytime/ anywhere.</p>
+                  <p>This also allowed to start conversations with suppliers for direct end to end EDI (Electronic Data Interchange) with large suppliers who expressed interest to receive the Purchase Orders directly into their ERP system without need for manual data entry. Large suppliers have already integrated with the retailer through Experion and Infinite Solutions EDI Gateway Services and receive Purchase Orders now directly into their ERP system without any need of manual data entry </p>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="news-events-slide">
+          <div class="news-events-row">
+            <div class="news-events-img"><span class="date">12</span><br>
+              Aug 2016</div>
+            <div class="news-events-txt">
+              <h2>Experion & Infinite Solutions sign up Gulf International for full EDI with large retailer.</h2>
+              <div class="news-events-desc">
+                <p><span>02</span>Experion Technologies Middle East & Africa along with its European partner Infinite Solutions has successfully signed up with Gulf International to enable integration with one of the largest retailers in the Middle East region.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true">
+                  <p>Gulf International supplies various goods and materials to the retailer. They receive multiple Purchase Orders from all of the retailer&#39;s stores. Each of the stores used to send Purchase Orders to Gulf International via emails or faxes. These emails or faxes were then used by the processing unit at AKI to create sales orders in Gulf International ERP system (SAP). Due to the manual nature of work, it took time to do data entry. Also manual data entry caused errors due to which many orders were wrongly delivered.</p>
+                  <p>Experion and Infinite proposed to build a EDI gateway connection between the retailer and Gulf International so that all Purchase Orders created at the retailers ERP system could be directly transferred to Gulf International's ERP system using the EDI gateway.</p>
+                  <p>This system allows Gulf International to avoid any of the manual labor costs and avoids manual data entry mistakes. </p>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="news-events-slide">
+          <div class="news-events-row">
+            <div class="news-events-img"><span class="date">01</span><br>
+              Jun 2016</div>
+            <div class="news-events-txt">
+              <h2>Experion wins first i-Shield deal from Asia-Pacific region.</h2>
+              <div class="news-events-desc">
+                <p><span>03</span>A fully-owned subsidiary of a Leading Oil & Gas Major selects i-Shield as its Vessel Clearance and Screening Platform. The Marine Management Team at the Clients offices in Singapore and Australia is responsible for ensuring compliance and implementation of key vetting criteria for Voyage and Time Chartered Ships. They hold primary responsibility for Vessel Clearance Screening processes for all vessels proposed for the Oil Majors business.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true">
+                  <p>A white labeled version of i-Shield is proposed to assist the Marine Team screen vessels across 10 different criteria via. VPQ, VIQ, Crew Matrix, Q88, Class Status, PSC, Casualty & Incident Reports, Terminal Feedback, Terminal Safety Inspections, Operator Performance and Location Clearance.</p>
+                  <p>As an extended phase of the same Project, Experion will enhance the product to add functionalities such Sanction monitoring and clearance, HRA clearance, Emission monitoring and voyage Carbon foot print and Real Time position monitoring using AIS feeds</b></p>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="news-events-slide">
+          <div class="news-events-row">
+            <div class="news-events-img"><span class="date">05</span><br>
+              Apr 2016</div>
+            <div class="news-events-txt">
+              <h2>Experion develops portal for Dar Al Takaful to enable DHA integration.</h2>
+              <div class="news-events-desc">
+                <p><span>04</span>Experion Technologies Middle East & Africa has signed up with one of the largest local insurance company, Dar Al Takaful, to allow it to comply with the Dubai Health Authority eClaimLink solution. As part of the eClaimLink solution, Dubai Health Authority (DHA) is aiming to correct detailed demographic and insurance related details about the insured population in the emirate of Dubai.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true">
+                  <p>Member Register OR PersonRegister is the current transaction facilitating the collection of this information from the Insurance companies (Payer) into the Dubai Health Post Office (DHPO). As per Phase 1 of this project, Payers will upload all their member information to the eClaimLink through the Member Register transactions. No validation with the GDRFA will occur; only eClaimLink Member Register schema validation will happen at phase 1.</p>
+                  <p>Experion Technologies has built an online platform for Dar Al Takaful to allows it to validate all the member records it currently insures, show the errors in the collected data and guides the employees of Dar Al Takaful on what needs to be done to comply with the guidelines put forth in the Member Register Project scope.</p>
+                  <p>The result was that Dar Al Takaful was successfully able to collect and upload all member data to DHA and thereby be compliant with the guidelines setup.</p>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="news-events-slide">
+          <div class="news-events-row">
+            <div class="news-events-img"><span class="date">30</span><br>
+              Mar 2016<!--<span class="share-button-black"></span>--></div>
+            <div class="news-events-txt">
+              <h2>Experion successfully rolls out eBA across Sales &amp; Marketing offices of Leading Tire Manufacturer.</h2>
+              <div class="news-events-desc">
+                <p><span>05</span>The MEA branch of one of the world's largest Tire Manufacturers decided to
+
+                  implement eBA for automating business process workflows within their Sales and
+
+                  Marketing Divisions in office across the region. With 100 plus employees
+
+                  distributed over Sales and Marketing offices in various cities in the region, all
+
+                  Business Travel Expense reimbursement, Cash Expenses Tracking and Expense
+
+                  Booking and Approvals were currently executed on Excel Template based formats
+
+                  flowing through the email approval routes. In addition to considerable delays in
+
+                  the approval cycles, other major disadvantages included inability to validate
+
+                  entered data against company policies leading to multiple iterations. </p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true">
+                  <p>Experion could successfully roll out eBA and automate the said processes across all the Sales and Marketing office for the Distributor within 3 months. In addition to automating the processes and validating captured data against company policies the processes were also configured to integrate all financial entries generated out
+                    of approved processes into SAP ERP.</p>
+                  <p>The success of the eBA rollout has resulted in the organization exploring additional processes to be automated on the platform.</p>
+                  <p>As the next phase, Experion will automate the organizations Channel Campaign Management Processes that will allow the Channel Management Team to register Sales and Promotional campaigns for select Distributors amongst its Distributor Network as well as allows respective Distributors to report campaign statistics and claim appropriate benefits. The eBA platform will facilitate a central repository of all campaign information, interactions between Channel Management teams and Distributors in turn facilitating Campaign Dashboards to be made available for analyzing campaigns success rates across multiple parameters.</p>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="news-events-slide">
+          <div class="news-events-row">
+            <div class="news-events-img"><span class="date">02</span><br>
+              Feb 2016</div>
+            <div class="news-events-txt">
+              <h2>Experion & Infinite Solutions sign up Al Khayyat Investments for full EDI with large retailer.</h2>
+              <div class="news-events-desc">
+                <p><span>06</span>Experion Technologies Middle East & Africa along with its European partner Infinite Solutions has successfully signed up with Al Khayyat Investments to enable integration with one of the largest retailers in the Middle East region.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true">
+                  <p>Al Khayyat Investments supplies various goods and materials to the retailer. They receive multiple Purchase Orders from all of the retailer&#39;s stores. Each of the stores used to send Purchase Orders to AKI via emails or faxes. These emails or faxes were then used by the processing unit at AKI to create sales orders in AKIs ERP system (Oracle). Due to the manual nature of work, it took time to do data entry. Also manual data entry caused errors due to which many orders were wrongly delivered.</p>
+                  <p>Experion and Infinite proposed to build a EDI gateway connection between the retailed and AKI so that all Purchase Orders created at the retailers ERP system could be directly transferred to AKIs ERP system using the EDI gateway.</p>
+                  <p>This system allows AKI to avoid any of the manual labor costs and avoids manual data entry mistakes. The ROI of this solution was realized within the first month of the implementation itself and all orders were sent to AKI, Sales Orders created within seconds.</p>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="news-events-slide">
+          <div class="news-events-row">
+            <div class="news-events-img"><span class="date">01</span><br>
+              Feb 2014</div>
+            <div class="news-events-txt">
+              <h2>New Partnership: Experion partners with Bimser International to introduce a state-of- the-art ECM platform to the region.</h2>
+              <div class="news-events-desc">
+                <p><span>07</span>Experion Technologies signs a partnership with Bimser International to exclusively sell and implement its Enterprise Transaction Management solution eBA, to customers in the region. eBA is positioned as a comprehensive solution for a customers' enterprise content management (ECM). enterprise information management (EIM) or business process management (BPM) needs.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true">
+                  <p>Bimser and its partner network has to its credit 100's of successful enterprise implementations in Turkey with a majority, of them being implemented for customer on the SAP ERP platform.</p>
+                  <p>Experion is fast creating a good reputation in the MEA markets for developing and deploying custom-made applications to meet its client's business  requirements. eBA allows Experion to extends these enterprise applications with comprehensive enterprise content management capabilities, including <b>document management, workflow, records management and intelligent document capture.</b></p>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="news-events-slide">
+          <div class="news-events-row">
+            <div class="news-events-img"><span class="date">01</span><br>
+              Jan 2014</div>
+            <div class="news-events-txt">
+              <h2>Experion partners with Leading Pharma Major on their Work Smart Initiative</h2>
+              <div class="news-events-desc">
+                <p><span>08</span>Experion Technologies is selected to implement a Business Process Automation platform for a Leading Pharma Major across their Sales and Marketing offices in the MEA region.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true">
+                  <p>The Organization has been using mostly manual form based procedures to capture data, get approvals and record their Ethical Interaction Processes with
+                    Healthcare partners and stakeholders. Each of these interactions needed to adhere to strict compliance and regulatory policies and the manual and paper based execution of such processes was increasingly becoming difficult to audit in addition to other problems such as delays in approvals, lack of checks for important parameters such as submission of mandatory documentation or closure of interactions within set time limits etc.</p>
+                  <p>Experion has been selected as the technology Partner for implementing a Work Smart Portal which will become a central repository of all Ethical Interaction
+
+                    process data allowing Medical Reps to request approvals and flow such requests within the organizations approval hierarchy till final closure and including the tracking of end-outcomes of the interaction with appropriate stakeholders. The Portal tracks process flows against set SLA's and identifies and highlights breach of compliance regulations if any and triggers escalation intimations to appropriate personnel.</p>
+                  <p>The Pharma Major is also evaluating the use of the platform for automating the HR &amp; Recruitment and IT Help Desk and Asset Management Processes as a second phase of the Project.</p>
+                </div>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<a id="ete-mobility-and-healthcare"></a>
+<div class="endtoend-solution health-care-box common-spacing">
+  <div class="container">
+    <div class="wow animated fadeInDown heading-box" data-wow-delay="0.1s" data-wow-offset="50">
+      <h2> Mobility Meets <span>Healthcare </span> </h2>
+    </div>
+    <div class="ete-desc">
+      <p class="wow animated fadeInUp" data-wow-delay="0.15s" data-wow-offset="50">Our mission in healthcare is to address challenges around affordability, prevention, and patient-centricity for consumers around the world.</p>
+      <p>In support of this mission, we help healthcare organizations transform, innovate, and optimize to build tomorrow's healthcare enterprise. We recognize healthcare needs are global while solutions are local – we bring best practices and industry solutions to suit specific healthcare models in different regions / countries.</p>
+      <!--<p>&quot;Better health is not a Science problem, it&#39;s an Information problem"</p>
+<p>– Thomas Goetz, Executive Editor, Wired Magazine.</p>-->
+      <div class="wow animated fadeInDown ete-italic" data-wow-delay="0.2s" data-wow-offset="50"> &quot;Better health is not a Science problem, it&#39;s an Information problem"<br>
+        – Thomas Goetz, Executive Editor, Wired Magazine. <img src="images/health-care-logo.png"> </div>
+    </div>
+    <div class="circle-boxes">
+      <ul>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.2s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="patient-engagement.html"> <i class="icon-1"></i> <span>Patient<br>
+              Engagement</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.5s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="health-care-app.html"> <i class="icon-2"></i> <span>Healthcare Apps </span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<a  id="meet-the-team"></a>
+<div class="meeet-the-team common-spacing">
+  <div class="container">
+    <div class="wow animated fadeInDown heading-box" data-wow-delay="0.1s" data-wow-offset="50">
+      <h2> Meet The <span>Team</span></h2>
+    </div>
+    <div class="wow animated fadeInUp team-desc"  data-wow-delay="0.15s" data-wow-offset="50">
+      <p>Our team is a blend of transformational and results oriented individuals driven by a passion to deliver holistic value through our leadership efforts and by working as a trusted advisor and close associate in all our client partnership efforts.</p>
+      <p>At the core of our value system is building long term relationships with the biggest assets which include our clients and our employees.</p>
+      <p>We believe in technology transforming the business and encourage diversity in our workplace, for only when we have a workforce which is unique and yet different, can we hope and dream to consistently be where we are - in the space of innovation and sustainable growth.</p>
+    </div>
+  </div>
+</div>
+<div class="meeet-the-team common-spacing board-of-directors">
+  <div class="container">
+    <div class="wow animated fadeInDown heading-box" data-wow-delay="0.1s" data-wow-offset="50">
+      <h3>Advisory Board</span></h3>
+    </div>
+    <div class="wow animated fadeInUp team-desc"  data-wow-delay="0.15s" data-wow-offset="50">
+      <p>Our Advisory Board brings diverse industry knowledge and senior Executive management insights from Retail, Healthcare, Oil & Gas and Marine to our global operations at Experion. Their combined expertise has led, and continues to shape, our efforts and lead new initiatives.</p>
+    </div>
+    <div class="team-slider-cntr">
+      <div class="wow animated fadeInUp team-slider" data-wow-delay="0.3s"  data-wow-offset="150">
+
+      <div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-name"> <a href="https://ae.linkedin.com/in/balupnair" target="_blank">
+                <h2>Balakrishnan Parameswaran</h2>
+                <p>CEO</p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="team-cell team-img"><img src="images/balakrishnan-parameswaran.jpg"></div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-name"> <a href="https://ae.linkedin.com/in/bijoyc" target="_blank">
+                <h2>Bijoy Chandrabalan</h2>
+                <p>COO</p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="team-cell team-img"><img src="images/bijoy-chandrabalan.jpg"></div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+      <div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-name"> <a href="https://ae.linkedin.com/in/adicodaty" target="_blank">
+                <h2>Adi Codaty</h2>
+                <p>Advisor to the board</p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="team-cell team-img"><img src="images/adi-codaty.jpg"></div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-name"> <a href="https://sg.linkedin.com/in/captpradeepsin" target="_blank">
+                <h2>Captain Pradeep Singh</h2>
+                <p>Advisor to the board</p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="team-cell team-img"><img src="images/pradeep-singh.jpg"></div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-name"> <a href="https://www.linkedin.com/in/harish-chidambaran-2b0216" target="_blank">
+                <h2>Harish Chidambaram</h2>
+                <p></p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="team-cell team-img"><img src="images/harish-chidambaram.jpg"></div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="meeet-the-team common-spacing leadership-team">
+<div class="container">
+<div class="wow animated fadeInDown heading-box" data-wow-delay="0.1s" data-wow-offset="50">
+  <h3>Leadership Team</span></h3>
+</div>
+    <div class="wow animated fadeInUp team-desc"  data-wow-delay="0.15s" data-wow-offset="50">
+      <p>The members of our Executive leadership team lead the business strategy , operational, technology and long-term growth objectives enabling and executing on our global initiatives.</p>
+    </div>
+<div class="team-slider-cntr">
+<div class="wow animated fadeInUp team-slider1" data-wow-delay="0.3s"  data-wow-offset="150">
+<div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-img"><img src="images/balakrishnan-parameswaran.jpg"></div>
+              <div class="team-cell team-name"> <a href="https://ae.linkedin.com/in/balupnair" target="_blank">
+                <h2>Balakrishnan Parameswaran</h2>
+                <p>CEO</p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-img"><img src="images/bijoy-chandrabalan.jpg"></div>
+              <div class="team-cell team-name"> <a href="https://ae.linkedin.com/in/bijoyc" target="_blank">
+                <h2>Bijoy Chandrabalan</h2>
+                <p>COO</p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-img"><img src="images/ratish-nair.jpg"></div>
+              <div class="team-cell team-name"> <a href="https://www.linkedin.com/in/ratish81" target="_blank">
+                <h2>Ratish Nair</h2>
+                <p>Director, Business Development</p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-img"><img src="images/santosh.jpg"></div>
+              <div class="team-cell team-name"> <a href="https://www.linkedin.com/in/santosh-kumar-gopinathan-4a810814?authType=NAME_SEARCH&authToken=XSbF&locale=en_US&srchid=154735931483873248741&srchindex=1&srchtotal=1&trk=vsrp_people_res_name&trkInfo=VSRPsearchId%3A154735931483873248741%2CVSRPtargetId%3A48039104%2CVSRPcmpt%3Aprimary%2CVSRPnm%3Atrue%2CauthType%3ANAME_SEARCH" target="_blank">
+                <h2>Santosh Kumar</h2>
+                <p>VP India Operations</p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-img"><img src="images/vikas.jpg"></div>
+              <div class="team-cell team-name"> <a href="#" target="_blank">
+                <h2>Capt. Vikas Nayar</h2>
+                <p>Marine Domain Expert</p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-img"><img src="images/sudhir.jpg"></div>
+              <div class="team-cell team-name"> <a href="https://www.linkedin.com/in/captsudheer?authType=NAME_SEARCH&authToken=jJ_S&locale=en_US&trk=tyah&trkInfo=clickedVertical%3Amynetwork%2CclickedEntityId%3A32437276%2CauthType%3ANAME_SEARCH%2Cidx%3A1-1-1%2CtarId%3A1483872927609%2Ctas%3ACapt.Sudheer%20Chit" target="_blank">
+                <h2>Capt. Sudheer Chitla</h2>
+                <p>Marine Domain Expert</p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+        <div class="team-slides">
+          <div class="team-box">
+            <div class="team-table">
+              <div class="team-cell team-img"><img src="images/michael.png"></div>
+              <div class="team-cell team-name"> <a href="#" target="_blank">
+                <h2>Capt. Michael Neuhaus</h2>
+                <p>Marine Domain Expert</p>
+                <span class="round-colored"></span> </a> </div>
+              <div class="clear"></div>
+            </div>
+          </div>
+        </div>
+</div>
+</div>
+</div>
+</div>
+<a id="ete-insurance-network"></a>
+<div class="endtoend-solution insurance-network common-spacing">
+  <div class="container">
+    <div class="wow animated fadeInDown heading-box" data-wow-delay="0.1s" data-wow-offset="50">
+      <h2> <span>Insurance Network</span> Made Easy </h2>
+    </div>
+    <div class="ete-desc"><!--ete-desc-style2-->
+      <p>Several drivers of change, including new and rigorous expectations from regulators and standards setters, increasing demands for more relevant and useful information, improvements in analytics, and the need for operational transformation,  are compelling insurance companies to re-evaluate and modernize all aspects of their business model and operations.</p>
+      <p>At Experion, our approach is based on a forward-looking, future-proof view and holistically addressing the combination of forces that are impacting the existing insurance operational model. We do not believe that insurers will benefit by addressing them one by one in a tactical and reactive manner.</p>
+      <p>This means that key functional areas need to work together to create an insurance operating model that is nimble, agile, future-proof and can help companies manage and adapt to change as part of standard business practices.</p>
+      <div class="wow animated fadeInUp ete-italic" data-wow-delay="0.15s" data-wow-offset="50">I think we classify linear progression as innovation... We need to fund and underwrite truly innovative ideas. It's amazing when there's an obvious threat how we react. Legacy, regulatory, and process issues go away, and everyone rallies. - Peter Settel, CIO of Homesite Insurance</div>
+      <br>
+      <img src="images/end-to-end-logo.png"> </div>
+    <div class="circle-boxes circle-less">
+      <ul>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.2s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="member-engagement.html"> <i class="icon-1"></i> <span>Member Engagement <br>
+              Platform</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.5s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="hospital-integration-platform.html"> <i class="icon-2"></i> <span>Hospital Integration<br>
+              Platform</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.5s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="insurance-mobile-app.html"> <i class="icon-3"></i> <span>Insurance Mobile App</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<a id="ete-retail-and-distribution"></a>
+<div class="endtoend-solution health-care-box retail-and-distributn common-spacing">
+  <div class="container">
+    <div class="wow animated fadeInDown heading-box" data-wow-delay="0.1s" data-wow-offset="50">
+      <h2> Retail & Distribution</h2>
+    </div>
+    <div class="ete-desc">
+      <p class="wow animated fadeInUp" data-wow-delay="0.15s" data-wow-offset="50">Experion brings multiple solution frameworks for the Retail &amp; Distribution domain mainly concentrated around the three areas of Supply Chain Automation, Mobile Sales Force Automation and B2B Market Places for Businesses.</p>
+      <p class="wow animated fadeInUp" data-wow-delay="0.15s" data-wow-offset="50">Mobile systems play the pivotal role in the enhancement of enterprise profitability by means of incomes increase and operational cost cuts. Functionally-rich SFA tools meet the needs of companies with the dispersed mobile sales teams.</p>
+      <p class="wow animated fadeInUp" data-wow-delay="0.15s" data-wow-offset="50">Eliminate time-consuming and error-prone paper document exchange. Enhance enterprise
+        profitability by increasing incomes and cutting operational costs. Enable bidirectional and secure transaction activities connected with order processing and data interchange between HO and Stores.</p>
+      <div class="wow animated fadeInDown ete-italic" data-wow-delay="0.2s" data-wow-offset="50"> "Almost all quality improvement comes via simplification of design, manufacturing… layout, processes, and procedures."  - Tom Peters, author of In Search of Excellence <img src="images/health-care-logo.png"> </div>
+    </div>
+    <div class="circle-boxes circle-less">
+      <ul>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.2s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="infinite-edi-suite.html"> <i class="icon-1"></i> <span>Infinite EDI <br>
+              Suite</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.5s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="infinite-sfa-crm-suite.html"> <i class="icon-2"></i> <span>Infinite SFA/CRM <br>
+               Suite</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.5s">
+          <div class="box-table">
+            <div class="box-tablecell"> <a href="infinite-marketplace-suite.html"> <i class="icon-3"></i><span>Infinite Marketplace <br> Suite</span> </a> </div>
+            <div class="shadow-div"></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="solution-boxes common-spacing">
+  <div class="container">
+    <div class="solution-types">
+      <ul>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.2s"> <a href="workflow-automation.html">
+          <div class="solution-img"> <img src="images/solution-1.jpg"> <span class="round-colored"></span> </div>
+          <div class="solutn-hadng"> Workflow Automation Solution </div>
+          </a> </li>
+        <li class="wow animated fadeInDown heading-box" data-wow-delay="0.5s"> <a href="application-development.html">
+          <div class="solution-img"> <img src="images/solution-2.jpg"> <span class="round-colored"></span> </div>
+          <div class="solutn-hadng">Application Development </div>
+          </a> </li>
+        <li class="wow animated fadeInUp heading-box" data-wow-delay="0.8s"> <a href="consulting.html">
+          <div class="solution-img"> <img src="images/solution-3.jpg"> <span class="round-colored"></span> </div>
+          <div class="solutn-hadng"> Consulting </div>
+          </a> </li>
+        <li class="wow animated fadeInDown heading-box" data-wow-delay="1.1s"> <a href="x-idc.html">
+          <div class="solution-img"> <img src="images/solution-4.jpg"> <span class="round-colored"></span> </div>
+          <div class="solutn-hadng"> X-IDC <span>(Extended IT Resourcing Plans)</span> </div>
+          </a> </li>
+      </ul>
+      <div class="clear"></div>
+    </div>
+  </div>
+</div>
+<a id="case-studies"></a>
+<div class="blog-box common-spacing home-blog home">
+  <div class="container">
+    <div class="wow animated fadeInUp blog-cntr" data-wow-delay="0.3s"  data-wow-offset="150">
+      <div class="blog-slider">
+        <div class="blog-slide">
+          <div class="blog-row">
+            <div class="blog-img"> <a href="#"><img src="images/retail-distribution-blog.png"></a> <span class="share-button-black"></span></div>
+            <div class="blog-txt">
+              <!--<p>Experion rolls out End-Customer Mobile App for Large Logistics Company</p>-->
+              <h2>Experion develops mobile application for a large third party logistics company</h2>
+              <div class="blog-desc">
+                <p><span>01</span>The Client, provides end-to- end supply chain solutions for all categories of Information Technology products (PCs, PC building blocks, networking, software and enterprise solution products) and Consumer and Lifestyle products (Telecom, Digital Lifestyle products, Entertainment products and Digital Printing Machines) to over 100 international brands and relationship with major brands have been for years.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true"> <abbr>The Challenges: </abbr>
+                  <p>The client is amongst the leading supply chain solution providers in Middle East, Africa and CIS region for leading manufacturers of Information Technology, Telecom and Lifestyle products.</p>
+                  <ul>
+                    <li>Clients customers had to rely on phone based support or email based support to track the shipment movements.</li>
+                    <li>Tracking of shipments was limited to website searches.</li>
+                    <li>Customers wanted notifications on shipment movements.</li>
+                    <li>Mobile presence was required to reach core customers and help digital roadmap plan.</li>
+                  </ul>
+                  <p>Experion utilised its MobiCMS platform to develop a hybrid mobile app that could deliver iOS and
+
+                    Android applications. This app came with a full Content Management System to manage the mobile app
+
+                    data, send notifications directly to customers on their phones. The app was integrated to the clients'
+
+                    ERP system so that if shipment movement was detected at warehouse or logistics level, a notification
+
+                    would be send to the mobile app directly. Also, a full-fledged, search engine was developed on the
+
+                    mobile app to search for shipments across various search parameters and retrieve the shipments
+
+                    history.</p>
+                  <div> <abbr>Outcome</abbr>
+                    <ul>
+                      <li>App integrated with Distributors SAP ERP and their Third-Party Logistics solution to pull Order and Shipment Data real time.</li>
+                      <li>Client could deliver this mobile app to all customers and improve service levels to its customers</li>
+                      <li>Allow users to search shipment based on various search parameter</li>
+                      <li>Delivery notifications –notification on mobile devices to customers when any status update happens (in warehouse, delivery etc.)</li>
+                      <li>Full-fledged CMS backend panel to manage and edit content pages on the mobile devices</li>
+                      <li>Provide full end to end notification services to customers</li>
+                    </ul>
+                  </div>
+                </div>
+                <ul class="social-media">
+                  <li><a href="#">FACEBOOK</a></li>
+                  <li><a href="#">TWITTER</a></li>
+                  <li><a href="#" class="active">YOUTUBE</a></li>
+                  <li><a href="#">GOOGLE +</a></li>
+                  <div class="clear"></div>
+                </ul>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="blog-slide">
+          <div class="blog-row">
+            <div class="blog-img"> <a href="#"><img src="images/blog-img.jpg"></a> <span class="share-button-black"></span></div>
+            <div class="blog-txt">
+              <!--<p>Member Engagement Platform for Multinational Third Party Administrator.</p>-->
+              <h2>Experion delivers enterprise member engagement platform for a large third party insurance administrators.</h2>
+              <div class="blog-desc">
+                <p><span>02</span>The Client is a managed care service provider of quality solutions that meet an individual&#39;s long-term
+
+                  healthcare needs and offers financial protection against unforeseen health crisis and expenses. Along
+
+                  with provision of administrative support for healthcare products and are enhanced by product design,
+
+                  pricing support, medical risk evaluation, medical management, healthcare provider (network)
+
+                  management, claims management, training and consulting services.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true"> <abbr>The Challenges: </abbr>
+                  <ul>
+                    <li>Client wanted to develop a platform to enable valid data collection from all its end customers.</li>
+                    <li>Client performed policy management activity for its partners ie Insurance Companies and Insurance Brokers</li>
+                    <li>Part of the policy management involved member data management, collection of personal information from end member, document collection, ensuring that all data was validated as per Regulatory compliance</li>
+                    <li>Policy Management was divided into Group Policies, Individual Policies, Policy Renewals and Endorsements.</li>
+                    <li>There was a lot of manual data entry, manual interactions within the employees of TPA, Insurance and Broker to ensure data capture was done correctly, in time and ensure that members cards were printed in time and delivered.</li>
+                    <li>Due to the huge volume of manual work involved, the cost of policy management was too high and productivity was minimal.</li>
+                  </ul>
+                  <p>The Experion Consulting team along with the key business personnel, understood the various communication channels used, and identified various workflows wherever possible. An end – end solution was developed which allowed web based access to all the actors in the process chain including Members, Groups, Insurance Companies, Brokers, TPA's employees. New TO-BE processes were also defined across the entire chain. The system was integrated with the TPAs ERP system so that all the collected data can be "pushed" into the ERP system with minimal manual intervention</p>
+                  <div> <abbr>Outcome</abbr>
+                    <ul>
+                      <li>Turn Around Times were vastly improved across all lines of business ie Group Business and Individual Business.</li>
+                      <li>Improved the TPAs business relationship with Insurers.</li>
+                      <li>Direct integration meant less reliance on manual data entry – improved productivity.</li>
+                      <li>Able to push towards digitization of the insurance cards.</li>
+                      <li>100% Regulatory compliance was achieved.</li>
+                    </ul>
+                  </div>
+                </div>
+                <ul class="social-media">
+                  <li><a href="#">FACEBOOK</a></li>
+                  <li><a href="#">TWITTER</a></li>
+                  <li><a href="#" class="active">YOUTUBE</a></li>
+                  <li><a href="#">GOOGLE +</a></li>
+                  <div class="clear"></div>
+                </ul>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="blog-slide">
+          <div class="blog-row">
+            <div class="blog-img"> <a href="#"><img src="images/web-dev-blog.png"></a> <span class="share-button-black"></span></div>
+            <div class="blog-txt">
+              <!--<p>I-Detailing APP's for Pharma</p>-->
+              <h2>Experion Develops Range of Product Detailing iOS Apps for Pharma Major to Aid Highly Effective and In-Depth Product Detailing</h2>
+              <div class="blog-desc">
+                <p><span>03</span>The Client, a Multinational Pharma Major manufactures and distributes a range of innovative Medicines globally. In the region they have 100+ Sales &amp; Medical Representatives out in the field interacting with the Healthcare Community. </p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true"> <abbr>The Challenges: </abbr>
+                  <ul>
+                    <li>One of the biggest challenges of Medical Field Representatives is restricted access to physician's time while delivering product information</li>
+                    <li>The short windows of granted time often hinders effective communication, especially when using conventional detailing methods - brochures, print-outs and other marketing folders</li>
+                    <li>The conventional mode of information delivery with Visual Aid Folders is less effective in engaging the physician, retaining his attention span and influencing his intent to prescribe</li>
+                    <li> An ideal solution should be easy to use &amp; navigate and use the right mix of interactivity &amp; multimedia elements to enhance the overall detailing experience</li>
+                  </ul>
+                  <p>The Solution was to use Experion's i-Detailing Framework to configure a Tablet based i-Detailing solution as an effective tool for pharma sales representatives to deliver quick and effective sales pitch, thereby maximizing sales opportunities. The i-Detailing Framework provides:</p>
+                  <ul>
+                    <li> An effective solution to convert conventional sales collateral into visually rich and interactive tablet based application
+                      <ul>
+                        <li>Product Brochures</li>
+                        <li>Presentations</li>
+                      </ul>
+                    </li>
+                    <li> Interactivity and effectiveness of the application boosted with the help of:
+                      <ul>
+                        <li>Visually appealing, Interactive slides</li>
+                        <li>Animations and Dynamic highlighting</li>
+                        <li>Contextual Q&A</li>
+                        <li>Multi-Media Content</li>
+                      </ul>
+                    </li>
+                    <li> Integrated analytics to track usage characteristics
+                      <ul>
+                        <li>Slide view analysis</li>
+                        <li>User wise reports</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </div>
+                <ul class="social-media">
+                  <li><a href="#">FACEBOOK</a></li>
+                  <li><a href="#">TWITTER</a></li>
+                  <li><a href="#" class="active">YOUTUBE</a></li>
+                  <li><a href="#">GOOGLE +</a></li>
+                  <div class="clear"></div>
+                </ul>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="blog-slide">
+          <div class="blog-row">
+            <div class="blog-img"> <a href="#"><img src="images/blog-img.jpg"></a> <span class="share-button-black"></span></div>
+            <div class="blog-txt">
+              <!--<p>Crew Insurance Management Portal</p>-->
+              <h2>Experion develops a portal to manage insurance for pilots of large airliner.</h2>
+              <div class="blog-desc">
+                <p><span>04</span>The Client offers medical license protection plan, life insurance plan for pilots and life insurance plans for pilots spouse. It offers Sharia compliant products for Muslim members including option to opt-out of life insurance covers.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true"> <abbr>The Challenges: </abbr>
+                  <ul>
+                    <li>Pilots would register to the plan with the customer through a manual process.</li>
+                    <li>All pilots had to pay a monthly instalment or full year instalment for their insurance cover.</li>
+                    <li>Administrators managed all the pilots information and instalments on offline systems which made it very difficult to manage</li>
+                  </ul>
+                  <p>Experion developed a web portal for the administrator to perform management of all the activities done by the pilot and administrator</p>
+                  <div> <abbr>Feature</abbr>
+                    <ul>
+                      <li>Allows pilots to register on the web portal with their personal information.</li>
+                      <li>Creates automated policy documents for pilot.</li>
+                      <li>Allows third party administrators and trust employees to approve documents and finish registration process.</li>
+                      <li>Allows administrators to enter payment information and track missed payments.</li>
+                      <li>Sends automated notifications to members who missed payments.</li>
+                      <li>Generates automated membership certificates and membership cards.</li>
+                    </ul>
+                  </div>
+                </div>
+                <ul class="social-media">
+                  <li><a href="#">FACEBOOK</a></li>
+                  <li><a href="#">TWITTER</a></li>
+                  <li><a href="#" class="active">YOUTUBE</a></li>
+                  <li><a href="#">GOOGLE +</a></li>
+                  <div class="clear"></div>
+                </ul>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="blog-slide">
+          <div class="blog-row">
+            <div class="blog-img"> <a href="#"><img src="images/blog-img.jpg"></a><span class="share-button-black"></span> </div>
+            <div class="blog-txt">
+              <!--<p>Experion partners with Large Multinational Retailer for region-wide EDI roll out</p>-->
+              <h2>Experion onboards more than 600 suppliers onto its B2B EDI Web Portal.</h2>
+              <div class="blog-desc">
+                <p><span>05</span>The Client, a large Multinational is one of the largest hypermarket chains in the world, and one of the
+
+                  popular hypermarkets in the Middle East region. The brand ensures customer satisfaction and
+
+                  convenience while offering unbeatable value for money with a vast array of more than 100,000 products
+
+                  from home electronics and clothing, to fresh fruits from around the world and locally produced items.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true"> <abbr>The Challenges: </abbr>
+                  <ul>
+                    <li>Purchase Orders were sent to distributors via email/ fax.</li>
+                    <li>Due to email issues or fax issues at the distributors end (hardware), many orders were misplaced and hence delivery was not done on time.</li>
+                    <li>There was no clarity for the stores who placed the order if distributors actually got the Purchase Orders and had to rely on them actually having to deliver it on time.</li>
+                    <li>Late deliveries meant empty shelfs; Loss of business</li>
+                  </ul>
+                  <p>The Solution was to use Infinite - Experion's B2B Web Portal and to on-board all UAE suppliers on this
+
+                    portal so that all orders generated from the retailers ERP system would directly be available to the
+
+                    suppliers on this portal. Direct integration was done with Retailers ERP system, so there was no need of
+
+                    unreliable communication channels like Fax or Emails.</p>
+                  <div> <abbr>Outcome</abbr>
+                    <ul>
+                      <li>All orders generated from the Retails ERP system available on the online B2B portal.</li>
+                      <li>Administrators from retailers team could track if POs have been accessed by distributors – transparency improved.</li>
+                      <li>Automated Orders would be sent to supplier early in morning, so deliveries could be managed during the day and supplier efficiency was improved</li>
+                      <li>Ad Hoc store orders would be available immediately to suppliers and deliveries could be prioritized by suppliers accordingly</li>
+                      <li>Suppliers could access the systems anytime/anywhere as long as they had security details to access the portal – allowed them to be on the move and instruct delivery teams</li>
+                      <li>Retailer stopped reliance on email relays and fax servers – huge savings on infrastructure costs</li>
+                      <li>B2B portal was cloud based – so no hosting, networking charges.</li>
+                      <li>100% of orders became electronic and 100% suppliers complied to the electronic formats</li>
+                    </ul>
+                  </div>
+                </div>
+                <ul class="social-media">
+                  <li><a href="#">FACEBOOK</a></li>
+                  <li><a href="#">TWITTER</a></li>
+                  <li><a href="#" class="active">YOUTUBE</a></li>
+                  <li><a href="#">GOOGLE +</a></li>
+                  <div class="clear"></div>
+                </ul>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="blog-slide">
+          <div class="blog-row">
+            <div class="blog-img"> <a href="#"><img src="images/health-care-blog.png"></a> <span class="share-button-black"></span></div>
+            <div class="blog-txt">
+              <!-- <p>THE REGIONS FIRST TELEMEDICINE APP</p>-->
+              <h2>Abu Dhabi Telemedicine Centre rolls out mobicare as its Mobile Solution for Patient Interaction.</h2>
+              <div class="blog-desc">
+                <p><span>06</span>Abu Dhabi Telemedicine Centre (ADTC), part of Mubadala Healthcare, offers high quality,
+
+                  convenient and confidential medical consultations, over the phone. Experion along with its
+
+                  partner Mobatia has rolled out the mobicare patient management solution enabling ADTC's
+
+                  patient network to conveniently interact with it.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true">
+                  <p>The Telemed App provides ADTC's patients access to their doctor – at the touch of a button!.
+
+                    The  app guides patients to take pictures of the affected area, and lets them submit it directly to
+
+                    ADTC for the doctor to review.</p>
+                  <p>The Latest Version of the App facilities for registered Patients, advanced features like Mobile Tele-
+
+                    Consulting and access to recommended Treatment Plans.</p>
+                  <p>The app is available on both the iPhone and Android platforms.</p>
+                </div>
+                <ul class="social-media">
+                  <li><a href="#">FACEBOOK</a></li>
+                  <li><a href="#">TWITTER</a></li>
+                  <li><a href="#" class="active">YOUTUBE</a></li>
+                  <li><a href="#">GOOGLE +</a></li>
+                  <div class="clear"></div>
+                </ul>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="blog-slide">
+          <div class="blog-row">
+            <div class="blog-img"> <a href="#"><img src="images/eba-blog.jpg"></a> <span class="share-button-black"></span></div>
+            <div class="blog-txt">
+              <!-- <p>THE REGIONS FIRST TELEMEDICINE APP</p>-->
+              <h2>EBA For Channel Management</h2>
+              <div class="blog-desc">
+                <p><span>07</span>Experion's EBA Vertical for Channel Campaign Management allows Large Distributors, distributing their range of Products through a
+
+                  Channel Network across geographies to create, execute and track fixed-time product/s related marketing/promotional campaigns in partnership with select channels.</p>
+                <div class="read-more"><abbr>READ MORE</abbr> </div>
+                <div class="chanllenges-points" show="true"> <abbr>The Solution facilitates functions such as:</abbr>
+                  <ul>
+                    <li>Campaign Creation and Registration.</li>
+                    <li>Configure the Campaign Parameters and Rules for individual Channels.</li>
+                    <li>Announce and Provide Visibility of required Campaign Data to Channels.</li>
+                    <li>Collect, Process and Reimburse Claims from Partners per Campaign.</li>
+                    <li>Analyze and Measure Campaign Success across the Partner Network using comparison parameters such as Sales Volumes, Revenues generated etc.</li>
+                  </ul>
+                  <p>The System brings in a lot of efficiency in the Channel Campaign Management Processes by validating such points amongst others as:</p>
+                  <div>
+                    <ul>
+                      <li>That Claims are made with in the allowed Periods specified for each Campaign.</li>
+                      <li>The Total Claimed amount is within the approved budgeted share of expense that is approved by the Distributor</li>
+                      <li>In case of over-budget cases, Claims can be routed to Exception Routs where additional approvals are required for Claim reimbursement.</li>
+                    </ul>
+                  </div>
+                  <img src="images/eba-case-study-img.jpg"> </div>
+                <ul class="social-media">
+                  <li><a href="#">FACEBOOK</a></li>
+                  <li><a href="#">TWITTER</a></li>
+                  <li><a href="#" class="active">YOUTUBE</a></li>
+                  <li><a href="#">GOOGLE +</a></li>
+                  <div class="clear"></div>
+                </ul>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="contact-box">
+  <div class="wow animated fadeIn map-cntr" data-wow-delay="0.2s" data-wow-offset="150">
+    <div id="contact-map-block">
+      <h2>Contact Us</h2>
+      <div class="map-dtls">
+        <div class="map-img">
+            	  <i><img src="images/map-img.jpg"></i>
+               </div>
+        <div class="region-info">
+          <div class="region-info-header">
+            <ul>
+              <li id="middle_east" class="blue-li-bg"><img src="images/middle-east-icon.png"><br>
+                Middle East & Africa</li>
+              <li id="america" class="blue-li-bg"><img src="images/america-icon.png"><br>
+                Americas</li>
+              <li id="india" class="blue-li-bg"><img src="images/india-icon.png"><br>
+                India</li>
+              <li id="europe" class="green-li-bg"><img src="images/europe-icon.png"><br>
+                Europe</li>
+              <li id="asia_pacific" class="green-li-bg"><img src="images/asia-pacific-icon.png"><br>
+                Asia Pacific</li>
+            </ul>
+          </div>
+          <div class="region-dtls">
+            <div class="region-dtls-block region-title">
+              <h4>Experion Technologies</h4>
+              <p>Middle East & Africa</p>
+            </div>
+            <div class="region-dtls-block address-block">
+              <p>Level 14, Boulevard Plaza Tower One, <br>
+                Emaar Boulevard, <br>
+                Downtown,Dubai, <br>
+                P O Box 334155, </br>
+                Dubai, United Arab Emirates,</p>
+            </div>
+            <div class="region-dtls-block contact-block">
+              <p>Contact Person : Ratish Nair, <br>
+                Phone no : + 971 4 455 8733, + 971 4 455 8556, <br>
+                Email : <a href="mailto:info@experionmea.com">info@experionmea.com</a></p>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="banner-form-cn">
+      <div class="container">
+        <div class="address-banner">
+          <div class="address-desc">
+            <h2>Contact Us</h2>
+            <p>Level 14, Boulevard Plaza Tower One,<br>
+              Emaar Boulevard,<br>
+              Downtown Dubai,<br>
+              P O Box 334155,<br>
+              Dubai, United Arab Emirates<br>
+              Contact Person : Bijoy Chandrabalan<br>
+              + 971 4 455 8733<br>
+              + 971 4 455 8556<br>
+              <a href="mailto:info@experionmea.com" >info@experionmea.com</a> </p>
+          </div>
+        </div>
+        <div class="contact-form">
+          <form name="contactform" id="contactform" method="post" action="send-enquiry-php/mail.php" onSubmit="return form_validate_jquery('#contactform')">
+            <div class="contactlogo"> <img src="images/logo.png"> </div>
+            <div class="animated-form">
+              <div class="grid-layout">
+                <div class="form-row animate-label">
+                  <div class="form-field">
+                    <div class="grid-6">
+                      <div class="input-group">
+                        <label>* First Name</label>
+                        <input type="text" name="first_name" title="First Name" autocomplete="off" validation="text" class="inputType">
+                      </div>
+                    </div>
+                    <div class="grid-6">
+                      <div class="input-group">
+                        <label>* Last Name</label>
+                        <input type="text" name="last_name" title="Last Name" autocomplete="off" validation="text" class="inputType">
+                      </div>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                </div>
+                <div class="form-row animate-label">
+                  <div class="form-field">
+                    <div class="grid-6">
+                      <div class="input-group">
+                        <label>* Email ID</label>
+                        <input type="text" name="email" id="email" title="Email ID" autocomplete="off" validation="email" class="inputType">
+                      </div>
+                    </div>
+                    <div class="grid-6">
+                      <div class="input-group">
+                        <label>* Confirm Email ID</label>
+                        <input type="text" name="confirm_email" id="confirm_email" autocomplete="off" title="Confirm Email ID" validation="email" class="inputType">
+                      </div>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                </div>
+                <div class="form-row animate-label">
+                  <div class="form-field">
+                    <div class="grid-4">
+                      <div class="input-group">
+                        <label>* Enter the text as shown in image</label>
+                        <input type="text" name="captcha_code" title="Captcha" maxlength="4" autocomplete="off" validation="text" class="inputType">
+                      </div>
+                    </div>
+                    <div class="grid-2">
+                      <div class="input-group">
+                        <div class="captcha_image"></div>
+                      </div>
+                    </div>
+                    <div class="clear"></div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-field">
+                    <div class="grid-12"> </div>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+                <div class="form-row">
+                  <div class="grid-12">
+                    <div class="submitformbtn">
+                      <input type="submit" name="action" value="SUBMIT" class="box-btn">
+                    </div>
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="footer-menu-block">
+          <div class="footer-menu-container">
+            <div class="footer-menu">
+              <div class="menu_block">
+                <ul>
+                  <li>Company</li>
+                  <li><a href="about-us.html">About Us</a></li>
+                  <li><a href="index.html#meet-the-team">Meet The Team</a></li>
+                  <li><a href="index.html#news-events">News & Events</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="footer-menu">
+              <div class="menu_block">
+                <ul>
+                  <li>Solution</li>
+                  <li><a href="index.html#ete-oil-and-gas">Oil & Gas</a></li>
+                  <li><a href="index.html#ete-marine-oil-and-gas">Marine</a></li>
+                  <li><a href="index.html#ete-mobility-and-healthcare">Healthcare</a></li>
+                  <li><a href="index.html#ete-insurance-network">Insurance</a></li>
+                  <li><a href="index.html#ete-retail-and-distribution">Retail & Distribution</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="footer-menu">
+              <div class="menu_block">
+                <ul>
+                  <li>Technology</li>
+                  <li><a href="workflow-automation.html">Workflow Automation Solution</a></li>
+                  <li><a href="application-development.html">Application Development</a></li>
+                  <li><a href="consulting.html">Consulting</a></li>
+                  <li><a href="x-idc.html">X-IDC</a></li>
+                </ul>
+              </div>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+        <div class="copy-ryt"> © 2016-2017 Walk experion. </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!--<footer class="footer">
+<div class="container"> Copyright, &copy; 2015 - 2016 Company Name </div>
+</footer>-->
+</div>
+<!--<script src="scripts/wow.min.js"></script> -->
+<!--<script src="scripts/js_class.js"></script> -->
+<script>
+new WOW().init();
+</script>
+<script>
+var slider;
+$(window).load(function(){
+function insertCount(slide_curr,slide_count){
+//$('#slider-next').html('<i>0</i>'+ (slide_curr + 1));
+//$('#slider-next').css("background","url(../images/slider-arrow.png) no-repeat")
+};
+
+slider=$('.bxslider').bxSlider({
+auto: false,
+preloadImages: 'all',
+mode: 'horizontal',
+captions: false,
+controls: false,
+pager:false,
+pause:7000,
+speed:1000,
+touchEnabled:false,
+onSliderLoad: function (currentIndex) {
+$('.bxslider >li .slider-text').eq(1).addClass('active-slide');
+$('.bxslider >li .solution-bannerlinks').eq(1).addClass('active-slide');
+$(".slider-text.active-slide").addClass("wow animated fadeInLeft");
+$(".solution-bannerlinks.active-slide").addClass("wow animated fadeInRight");
+var slide_curr=currentIndex;
+insertCount(slide_curr)
+},
+onSlideAfter: function (currentSlideNumber, totalSlideQty, currentSlideHtmlObject) {
+console.log(currentSlideHtmlObject);
+$('.active-slide').removeClass('active-slide');
+$('.bxslider >li .slider-text').eq(currentSlideHtmlObject + 1).addClass('active-slide');
+$('.bxslider >li .solution-bannerlinks').eq(currentSlideHtmlObject + 1).addClass('active-slide');
+$(".slider-text.active-slide").addClass("wow animated fadeInLeft");
+$(".solution-bannerlinks.active-slide").addClass("wow animated fadeInRight");
+var slide_curr = slider.getCurrentSlide();
+insertCount(slide_curr);
+},
+onSlideBefore: function () {
+$(".slider-text.active-slide").removeClass("wow animated fadeInLeft");
+$(".solution-bannerlinks.active-slide").removeClass("wow animated fadeInRight");
+//$(".one.slider-text.active-slide").removeAttr('style');
+
+}
+});
+
+$('#slider-next').click(function(){
+slider.goToNextSlide();
+
+return false;
+});
+
+$('#slider-prev').click(function(){
+slider.goToPrevSlide();
+
+return false;
+});
+
+})
+
+$(function(){
+
+
+
+$(".trusted-sliderbx").slick({
+dots: true,
+infinite: true,
+slidesToShow: 4,
+slidesToScroll: 4,
+responsive: [
+{
+breakpoint: 1024,
+settings: {
+slidesToShow: 4,
+slidesToScroll: 4,
+}
+},
+{
+breakpoint: 980,
+settings: {
+slidesToShow: 3,
+slidesToScroll: 3
+}
+},
+{
+breakpoint: 767,
+settings: {
+slidesToShow: 2,
+slidesToScroll: 2
+}
+},
+{
+breakpoint: 568,
+settings: {
+slidesToShow: 1,
+slidesToScroll: 1
+}
+}
+// You can unslick at a given breakpoint now by adding:
+// settings: "unslick"
+// instead of a settings object
+]
+});
+
+$(".blog-slider").slick({
+dots: true,
+infinite: true,
+slidesToShow: 1,
+slidesToScroll: 1
+});
+$(".news-events-slider").slick({
+dots: true,
+infinite: true,
+slidesToShow: 1,
+slidesToScroll: 1
+});
+$(".team-slider").slick({
+dots: true,
+infinite: true,
+slidesToShow: 2,
+slidesToScroll: 2,
+responsive: [
+{
+breakpoint: 1024,
+settings: {
+slidesToShow: 2,
+slidesToScroll: 2,
+}
+},
+{
+breakpoint: 980,
+settings: {
+slidesToShow: 1,
+slidesToScroll: 1
+}
+},
+{
+breakpoint: 767,
+settings: {
+slidesToShow: 1,
+slidesToScroll: 1
+}
+}
+
+// You can unslick at a given breakpoint now by adding:
+// settings: "unslick"
+// instead of a settings object
+]
+});
+
+
+
+
+$(".team-slider1").slick({
+dots: true,
+infinite: true,
+slidesToShow: 3,
+slidesToScroll: 3,
+responsive: [
+{
+breakpoint: 1024,
+settings: {
+slidesToShow: 2,
+slidesToScroll: 2,
+}
+},
+{
+breakpoint: 980,
+settings: {
+slidesToShow: 1,
+slidesToScroll: 1
+}
+},
+{
+breakpoint: 767,
+settings: {
+slidesToShow: 1,
+slidesToScroll: 1
+}
+}
+
+// You can unslick at a given breakpoint now by adding:
+// settings: "unslick"
+// instead of a settings object
+]
+});
+$(".testimonial-img").slick({
+dots: false,
+infinite: true,
+centerMode: true,
+centerPadding: '0px',
+slidesToShow: 3,
+asNavFor: '.testimonail-txtslider',
+responsive: [
+{
+breakpoint: 568,
+settings: {
+slidesToShow: 1,
+}
+}
+// You can unslick at a given breakpoint now by adding:
+// settings: "unslick"
+// instead of a settings object
+]
+
+});
+$('.testimonail-txtslider').slick({
+slidesToShow: 1,
+slidesToScroll: 1,
+arrows: false,
+fade: true,
+asNavFor: '.testimonial-img',
+responsive: [
+{
+breakpoint: 568,
+settings: {
+slidesToShow: 1,
+slidesToScroll: 1,
+}
+}
+// You can unslick at a given breakpoint now by adding:
+// settings: "unslick"
+// instead of a settings object
+]
+});
+$(".ete-txtslider").slick({
+dots: true,
+infinite: true,
+slidesToShow: 1,
+slidesToScroll: 1,
+autoplay: true,
+autoplaySpeed: 7000
+});
+
+})
+</script>
+<!--<script src="scripts/slick.js" type="text/javascript" charset="utf-8"></script> -->
+<script src="scripts/common.js" type="text/javascript"></script>
+</body>
+</html>
